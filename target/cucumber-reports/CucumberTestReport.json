@@ -1,0 +1,118 @@
+[
+  {
+    "comments": [
+      {
+        "line": 1,
+        "value": "#Author: anthony0lai@gmail.com"
+      },
+      {
+        "line": 2,
+        "value": "#Keywords Summary :"
+      },
+      {
+        "line": 3,
+        "value": "#Feature: KiwiBank Calculator API test"
+      }
+    ],
+    "line": 6,
+    "elements": [
+      {
+        "before": [
+          {
+            "result": {
+              "duration": 345000,
+              "status": "passed"
+            },
+            "match": {
+              "location": "kbCalcAPITestStepDefinition.beforeScenario()"
+            }
+          }
+        ],
+        "line": 9,
+        "name": "Basic Calculation using different operators",
+        "description": "",
+        "id": "kiwibank-calculator-api-test;basic-calculation-using-different-operators",
+        "after": [
+          {
+            "result": {
+              "duration": 57200,
+              "status": "passed"
+            },
+            "match": {
+              "location": "kbCalcAPITestStepDefinition.afterScenario()"
+            }
+          }
+        ],
+        "type": "scenario",
+        "keyword": "Scenario",
+        "steps": [
+          {
+            "result": {
+              "duration": 2188151100,
+              "status": "passed"
+            },
+            "line": 10,
+            "name": "User requests a calculcation of 4 + 3",
+            "match": {
+              "arguments": [
+                {
+                  "val": "4",
+                  "offset": 32
+                },
+                {
+                  "val": "+",
+                  "offset": 34
+                },
+                {
+                  "val": "3",
+                  "offset": 36
+                }
+              ],
+              "location": "kbCalcAPITestStepDefinition.userRequest(String,String,String)"
+            },
+            "keyword": "When "
+          },
+          {
+            "result": {
+              "duration": 408936000,
+              "status": "passed"
+            },
+            "line": 11,
+            "name": "Response with status OK with value 7",
+            "match": {
+              "arguments": [
+                {
+                  "val": "OK",
+                  "offset": 21
+                },
+                {
+                  "val": "7",
+                  "offset": 35
+                }
+              ],
+              "location": "kbCalcAPITestStepDefinition.validateResponse(String,String)"
+            },
+            "keyword": "Then "
+          }
+        ],
+        "tags": [
+          {
+            "line": 8,
+            "name": "@Sanity"
+          }
+        ]
+      }
+    ],
+    "name": "Kiwibank Calculator API test",
+    "description": "",
+    "id": "kiwibank-calculator-api-test",
+    "keyword": "Feature",
+    "uri": "kbCalcAPITest.feature",
+    "tags": [
+      {
+        "line": 5,
+        "name": "@KiwiSaverCalcTest"
+      }
+    ]
+  }
+]
