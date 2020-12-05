@@ -23,7 +23,9 @@ public class kbCalcAPITestStepDefinition {
 	private FileInputStream inPropFile;
 	private String baseUrl;
 	private String apiAuthHeader;
+	private String apiWrongAuthHeader;
 	private String apiAuthSecret;
+	private String apiWrongAuthSecret;
 	private int lastRespStatusCode;
 	private ResponseBody lastRespBody;
 	
@@ -35,10 +37,43 @@ public class kbCalcAPITestStepDefinition {
 	
 	
 	@When("^User requests a calculcation of (.*) (.*) (.*)$")
-	public void userRequestNoInputConvert(String leftNumber, String calOperator, String rightNumber)
+	public void userRequest(String leftNumber, String calOperator, String rightNumber)
 	{
 		String requestBody = this.genRequestBody(leftNumber, calOperator, rightNumber);
 		this.genRequest(requestBody);
+	}
+	
+	@When("^User requests a calculcation of (.*) (.*) (.*) using wrong authentication secret$")
+	public void userRequestWrongSecret(String leftNumber, String calOperator, String rightNumber)
+	{
+		String requestBody = this.genRequestBody(leftNumber, calOperator, rightNumber);
+		this.genRequestWithWrongAuthSecret(requestBody);
+	}
+	
+	@When("^User requests a calculcation of (.*) (.*) (.*) using wrong authentication header$")
+	public void userRequestWrongAuthHeader(String leftNumber, String calOperator, String rightNumber)
+	{
+		String requestBody = this.genRequestBody(leftNumber, calOperator, rightNumber);
+		this.genRequestWithWrongAuthHeader(requestBody);
+	}
+	
+	@When("^User requests a calculcation of (.*) (.*) (.*) without authentication header$")
+	public void userRequestNoAuthHeader(String leftNumber, String calOperator, String rightNumber)
+	{
+		String requestBody = this.genRequestBody(leftNumber, calOperator, rightNumber);
+		this.genRequestWitNoAuthHeader(requestBody);
+	}
+	
+	private void genRequestWitNoAuthHeader(String requestBody)
+	{
+		Response resp = given()
+				.contentType(ContentType.JSON)
+	            .accept(ContentType.JSON)
+	            .body(requestBody)
+	            .when().post(this.baseUrl)
+	            .then().extract().response();
+		this.lastRespBody = resp.body();
+		this.lastRespStatusCode = resp.statusCode();
 	}
 	
 	private void genRequest(String requestBody)
@@ -47,6 +82,32 @@ public class kbCalcAPITestStepDefinition {
 				.contentType(ContentType.JSON)
 	            .accept(ContentType.JSON)
 	            .header(this.apiAuthHeader, this.apiAuthSecret)
+	            .body(requestBody)
+	            .when().post(this.baseUrl)
+	            .then().extract().response();
+		this.lastRespBody = resp.body();
+		this.lastRespStatusCode = resp.statusCode();
+	}
+	
+	private void genRequestWithWrongAuthHeader(String requestBody)
+	{
+		Response resp = given()
+				.contentType(ContentType.JSON)
+	            .accept(ContentType.JSON)
+	            .header(this.apiWrongAuthHeader, this.apiAuthSecret)
+	            .body(requestBody)
+	            .when().post(this.baseUrl)
+	            .then().extract().response();
+		this.lastRespBody = resp.body();
+		this.lastRespStatusCode = resp.statusCode();
+	}
+	
+	private void genRequestWithWrongAuthSecret(String requestBody)
+	{
+		Response resp = given()
+				.contentType(ContentType.JSON)
+	            .accept(ContentType.JSON)
+	            .header(this.apiAuthHeader, this.apiWrongAuthSecret)
 	            .body(requestBody)
 	            .when().post(this.baseUrl)
 	            .then().extract().response();
@@ -109,6 +170,8 @@ public class kbCalcAPITestStepDefinition {
 		this.baseUrl = apiProp.getProperty("baseUri");
 		this.apiAuthHeader = apiProp.getProperty("authHeader");
 		this.apiAuthSecret = apiProp.getProperty("authSecret");
+		this.apiWrongAuthHeader =apiProp.getProperty("falseAuthHeader");
+		this.apiWrongAuthSecret = apiProp.getProperty("falseAuthSecret");
 	}
 	@After
 	public void afterScenario() throws IOException {

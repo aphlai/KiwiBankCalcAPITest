@@ -100,6 +100,21 @@ Feature: Kiwibank Calculator API test
 		| 1e3        | /        | 5E2         | 2              |		
 
 	@Advanced @NonFunc	
+	Scenario Outline: Request with wrong auth. secret
+		When User requests a calculcation of 1 + 1 using wrong authentication secret
+	  Then Response with status Unauthorized with value N/A
+	  
+	@Advanced @NonFunc	
+	Scenario Outline: Request with wrong auth. header
+		When User requests a calculcation of 1 + 1 using wrong authentication header
+	  Then Response with status Unauthorized with value N/A
+	  
+	@Advanced @NonFunc	
+	Scenario Outline: Request without auth. header at all
+		When User requests a calculcation of 1 + 1  without authentication header
+	  Then Response with status Unauthorized with value N/A
+
+	@Advanced @NonFunc	
 	Scenario Outline: Hex. number support
 	  # Limitation: JSON does not officially support hex. number.  JSONObject library cannot pass hex. number as integer, but as string with quote (')
 		When User requests a calculcation of <LeftNumber> <Operator> <RightNumber>
