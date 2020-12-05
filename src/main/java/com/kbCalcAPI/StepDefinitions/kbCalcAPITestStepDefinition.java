@@ -35,13 +35,19 @@ public class kbCalcAPITestStepDefinition {
 	
 	
 	@When("^User requests a calculcation of (.*) (.*) (.*)$")
-	public void userRequest(String leftNumber, String calOperator, String rightNumber)
+	public void userRequestNoInputConvert(String leftNumber, String calOperator, String rightNumber)
+	{
+		String requestBody = this.genRequestBody(leftNumber, calOperator, rightNumber);
+		this.genRequest(requestBody);
+	}
+	
+	private void genRequest(String requestBody)
 	{
 		Response resp = given()
 				.contentType(ContentType.JSON)
 	            .accept(ContentType.JSON)
 	            .header(this.apiAuthHeader, this.apiAuthSecret)
-	            .body(this.genRequestBody(leftNumber, calOperator, rightNumber))
+	            .body(requestBody)
 	            .when().post(this.baseUrl)
 	            .then().extract().response();
 		this.lastRespBody = resp.body();
@@ -76,6 +82,15 @@ public class kbCalcAPITestStepDefinition {
 		}
 	}
 	
+	
+	private String genRequestBody(Integer leftNumber, String calOperator, Integer rightNumber)
+	{
+		JSONObject requestJSON = new JSONObject();
+		requestJSON.put("LeftNumber", leftNumber);
+		requestJSON.put("RightNumber", rightNumber);
+		requestJSON.put("Operator", calOperator);
+		return requestJSON.toJSONString();
+	}
 	
 	private String genRequestBody(String leftNumber, String calOperator, String rightNumber)
 	{
