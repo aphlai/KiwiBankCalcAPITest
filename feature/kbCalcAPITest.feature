@@ -80,7 +80,6 @@ Feature: Kiwibank Calculator API test
 
   @Regression	
 	Scenario Outline: Scientific notation input support
-	  # Limitation: JSON does not officially support hex. number.  JSONObject library cannot pass hex. number as integer, but as string with quote (')
 		When User requests a calculcation of <LeftNumber> <Operator> <RightNumber>
 	  Then Response with status OK with value <ExpectedResult>
 	Examples:
