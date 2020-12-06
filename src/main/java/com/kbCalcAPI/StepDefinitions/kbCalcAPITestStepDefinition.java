@@ -43,6 +43,13 @@ public class kbCalcAPITestStepDefinition {
 		this.genRequest(requestBody);
 	}
 	
+	@When("^User requests by GET method for a calculcation of (.*) (.*) (.*)$")
+	public void userRequestWithGETMethod(String leftNumber, String calOperator, String rightNumber)
+	{
+		String requestBody = this.genRequestBody(leftNumber, calOperator, rightNumber);
+		this.genRequestUsingGET(requestBody);
+	}
+	
 	@When("^User requests a calculcation of (.*) (.*) (.*) using wrong authentication secret$")
 	public void userRequestWrongSecret(String leftNumber, String calOperator, String rightNumber)
 	{
@@ -71,6 +78,19 @@ public class kbCalcAPITestStepDefinition {
 	            .accept(ContentType.JSON)
 	            .body(requestBody)
 	            .when().post(this.baseUrl)
+	            .then().extract().response();
+		this.lastRespBody = resp.body();
+		this.lastRespStatusCode = resp.statusCode();
+	}
+	
+	private void genRequestUsingGET(String requestBody)
+	{
+		Response resp = given()
+				.contentType(ContentType.JSON)
+	            .accept(ContentType.JSON)
+	            .header(this.apiAuthHeader, this.apiAuthSecret)
+	            .body(requestBody)
+	            .when().get(this.baseUrl)
 	            .then().extract().response();
 		this.lastRespBody = resp.body();
 		this.lastRespStatusCode = resp.statusCode();

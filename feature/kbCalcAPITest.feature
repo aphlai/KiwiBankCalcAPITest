@@ -125,3 +125,27 @@ Feature: Kiwibank Calculator API test
 		| 0xd        | -        | 0xf           | -2             |
 		| 0xf        | *        | 0xd           | 195            |
 		| 0x12       | /        | 0x2           | 9              |
+	
+	@Advanced @NonFunc	
+	Scenario Outline: Calculation using unsupported operators
+	# Issue: API response status code wrongly returns not found (404) insteaad of a proper error (500)
+	  When User requests a calculcation of <LeftNumber> <Operator> <RightNumber>
+	  Then Response with status Error with value N/A
+	Examples:
+		| LeftNumber | Operator | RightNumber |
+		| 1          | plus     | 2           |
+		| 9          | subtract | 5           |
+		| 4          | times    | 5           |
+		| 18         | divide   | 3           |
+		| 4          | x        | 5           |
+		
+	@Advanced @NonFunc	
+	Scenario Outline: Calculation using unsupported request method GET
+	  When User requests by GET method for a calculcation of <LeftNumber> <Operator> <RightNumber>
+	  Then Response with status Error with value N/A
+	Examples:
+		| LeftNumber | Operator | RightNumber |
+		| 1          | +        | 2           |
+		| 9          | -        | 5           |
+		| 4          | *        | 5           |
+		| 18         | /        | 3           |
