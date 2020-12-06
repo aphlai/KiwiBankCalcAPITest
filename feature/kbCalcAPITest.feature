@@ -141,6 +141,7 @@ Feature: Kiwibank Calculator API test
 		
 	@Advanced @NonFunc	
 	Scenario Outline: Calculation using unsupported request method GET
+	# Issue: API response status code wrongly returns not found (404) insteaad of a proper error (500)
 	  When User requests by GET method for a calculcation of <LeftNumber> <Operator> <RightNumber>
 	  Then Response with status Error with value N/A
 	Examples:
@@ -152,6 +153,7 @@ Feature: Kiwibank Calculator API test
 		
 	@Advanced @NonFunc	
 	Scenario Outline: Calculation using unsupported request body
+	# Issue: API response status code wrongly returns not found (404) insteaad of a proper error (500)
 	  When User requests by an unsupported body for a calculcation of <LeftNumber> <Operator> <RightNumber>
 	  Then Response with status Error with value N/A
 	Examples:
