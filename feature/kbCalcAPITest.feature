@@ -80,7 +80,7 @@ Feature: Kiwibank Calculator API test
 
   @Regression	
 	Scenario Outline: Scientific notation input support
-		When User requests a calculcation of <LeftNumber> <Operator> <RightNumber>
+		When User requests a calculcation with unsupported input value format of <LeftNumber> <Operator> <RightNumber>
 	  Then Response with status OK with value <ExpectedResult>
 	Examples:
 		# Test includes scentific notataion only on left side, only on right side, and on both sides of input for all operators
@@ -99,6 +99,35 @@ Feature: Kiwibank Calculator API test
 		| 1e2        | /        | 25          | 4              |
 		| 1e3        | /        | 5E2         | 2              |		
 
+  @Advanced @NonFunc	
+	Scenario Outline: Input underflow and overflow handling
+		When User requests a calculcation with unsupported input value format of <LeftNumber> <Operator> <RightNumber>
+	  Then Response with status Error with value N/A
+	Examples:
+		| LeftNumber   | Operator | RightNumber  | ExpectedResult |
+		| 3            | +        | -2147483650  | -2147483647    |
+		| 2147483650   | +        | -3           | 2147483647     |
+		| 2147483650   | +        | -2147483650  | 0              |
+		| 3            | -        | 2147483650   | -2147483647    |
+		| -2147483650  | -        | -3           | -2147483647    |
+		| 2147483650   | -        | 2147483649   | 1              |
+	
+	@Advanced @NonFunc	
+	Scenario Outline: Output underflow and overflow handling
+	# Issue: Returns wrong value once output is overflow with status OK (200).  Expecting either
+	# * Response proper error status code
+	# * Return correct value if response statud code is OK (200)
+		When User requests a calculcation of <LeftNumber> <Operator> <RightNumber>
+	  Then Response with status OK with value <ExpectedResult>
+	Examples:
+		| LeftNumber   | Operator | RightNumber  | ExpectedResult |
+		| 3            | +        | 2147483647   | 2147483650     |
+		| -2147483647  | +        | -3           | -2147483650    |
+		| -3           | -        | 2147483647   | -2147483650    |
+		| 3            | -        | -2147483647  | 2147483650     |
+		| 2147483647   | *        | 2            | 4294967294     |
+		| -2           | *        | 2147483647   | -4294967294    |
+	
 	@Advanced @NonFunc	
 	Scenario Outline: Request with wrong auth. secret
 		When User requests a calculcation of 1 + 1 using wrong authentication secret
@@ -117,7 +146,7 @@ Feature: Kiwibank Calculator API test
 	@Advanced @NonFunc	
 	Scenario Outline: Hex. number support
 	  # Limitation: JSON does not officially support hex. number.  JSONObject library cannot pass hex. number as integer, but as string with quote (')
-		When User requests a calculcation of <LeftNumber> <Operator> <RightNumber>
+		When User requests a calculcation with unsupported input value format of <LeftNumber> <Operator> <RightNumber>
 	  Then Response with status OK with value <ExpectedResult>
 	Examples:
 		| LeftNumber | Operator | RightNumber   | ExpectedResult |
@@ -162,3 +191,22 @@ Feature: Kiwibank Calculator API test
 		| 9          | -        | 5           |
 		| 4          | *        | 5           |
 		| 18         | /        | 3           |
+		
+	@Advanced @NonFunc
+	Scenario Outline: Proper error handling using unsupported non-integer number as input
+	  When User requests a calculcation with unsupported input value format of <LeftNumber> <Operator> <RightNumber>
+	  Then Response with status Error with value N/A
+	Examples:
+		| LeftNumber | Operator | RightNumber |
+		| 1.3        | +        | 2           |
+		| 1          | +        | 2.3         |
+		| 1.3        | +        | 2.3         |
+		| 9.1        | -        | 5           |
+		| 9          | -        | 5.1         |
+		| 9.1        | -        | 5.1         |
+		| 4.4        | *        | 5           |
+		| 4          | *        | 5.4         |
+		| 4.4        | *        | 5.4         |
+		| 18         | /        | 3.5         |
+		| 18.5       | /        | 3           |
+		| 18.5       | /        | 3.5         |

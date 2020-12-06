@@ -34,12 +34,18 @@ public class kbCalcAPITestStepDefinition {
 	final int statusCodeUnauth = 401;
 	final int statusCodeNotFound = 404;
 	
-	
+	@When("^User requests a calculcation with unsupported input value format of (.*) (.*) (.*)$")
+	public void userRequestWithUnsupportedValue(String leftNumber, String calOperator, String rightNumber)
+	{
+		String requestBody = this.genRequestBody(leftNumber, calOperator, rightNumber);
+		this.genRequest(requestBody);
+	}
 	
 	@When("^User requests a calculcation of (.*) (.*) (.*)$")
 	public void userRequest(String leftNumber, String calOperator, String rightNumber)
 	{
-		String requestBody = this.genRequestBody(leftNumber, calOperator, rightNumber);
+		// Use Long instead of Int. to support passing out of range numbers
+		String requestBody = this.genRequestBody(Long.parseLong(leftNumber), calOperator, Long.parseLong(rightNumber));
 		this.genRequest(requestBody);
 	}
 	
@@ -170,7 +176,7 @@ public class kbCalcAPITestStepDefinition {
 		}
 	}
 	
-	private String genRequestBody(Integer leftNumber, String calOperator, Integer rightNumber)
+	private String genRequestBody(Long leftNumber, String calOperator, Long rightNumber)
 	{
 		JSONObject requestJSON = new JSONObject();
 		requestJSON.put("LeftNumber", leftNumber);
