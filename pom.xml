@@ -4,23 +4,6 @@
   <artifactId>kbCalcAPI</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <name>KiwiBankCalcAPI</name>
-  <!--
-  <build>
-    <sourceDirectory>src</sourceDirectory>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <version>2.18.1</version>
-        <configuration>
-          <suiteXmlFiles>
-            <suiteXmlFile>TestNG.xml</suiteXmlFile>
-          </suiteXmlFiles>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
-  -->
   <dependencies>
   	<dependency>
   		<groupId>org.testng</groupId>
@@ -57,5 +40,36 @@
   		<artifactId>json-simple</artifactId>
   		<version>1.1</version>
   	</dependency>
+  	<dependency>
+  		<groupId>org.apache.maven.plugins</groupId>
+  		<artifactId>maven-surefire-plugin</artifactId>
+  		<version>3.0.0-M5</version>
+  		<type>maven-plugin</type>
+  	</dependency>
   </dependencies>
+  <build>
+  	<plugins>
+  		<plugin>
+    		<groupId>org.apache.maven.plugins</groupId>
+    		<artifactId>maven-compiler-plugin</artifactId>
+    		<version>3.6.1</version>
+		    <configuration>
+		      <source>1.8</source>
+		      <target>1.8</target>
+		    </configuration>
+  		</plugin>
+  		<plugin>
+  			<groupId>org.apache.maven.plugins</groupId>
+  			<artifactId>maven-surefire-plugin</artifactId>
+  			<version>3.0.0-M5</version>
+  			<configuration>
+  				<source>1.8</source>
+  				<target>1.8</target>
+	         	<suiteXmlFiles>
+	            	<suiteXmlFile>TestNG.xml</suiteXmlFile>
+	          	</suiteXmlFiles>
+        	</configuration>
+  		</plugin>
+  	</plugins>
+  </build>
 </project>
