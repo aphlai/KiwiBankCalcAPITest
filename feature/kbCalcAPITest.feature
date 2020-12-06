@@ -149,3 +149,14 @@ Feature: Kiwibank Calculator API test
 		| 9          | -        | 5           |
 		| 4          | *        | 5           |
 		| 18         | /        | 3           |
+		
+	@Advanced @NonFunc	
+	Scenario Outline: Calculation using unsupported request body
+	  When User requests by an unsupported body for a calculcation of <LeftNumber> <Operator> <RightNumber>
+	  Then Response with status Error with value N/A
+	Examples:
+		| LeftNumber | Operator | RightNumber |
+		| 1          | +        | 2           |
+		| 9          | -        | 5           |
+		| 4          | *        | 5           |
+		| 18         | /        | 3           |

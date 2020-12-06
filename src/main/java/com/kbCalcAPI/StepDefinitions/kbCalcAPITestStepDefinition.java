@@ -43,6 +43,13 @@ public class kbCalcAPITestStepDefinition {
 		this.genRequest(requestBody);
 	}
 	
+	@When("^User requests by an unsupported body for a calculcation of (.*) (.*) (.*)$")
+	public void userRequestInvalidBody(String leftNumber, String calOperator, String rightNumber)
+	{
+		String requestBody = this.genInvalidRequestBody(leftNumber, calOperator, rightNumber);
+		this.genRequest(requestBody);
+	}
+	
 	@When("^User requests by GET method for a calculcation of (.*) (.*) (.*)$")
 	public void userRequestWithGETMethod(String leftNumber, String calOperator, String rightNumber)
 	{
@@ -163,7 +170,6 @@ public class kbCalcAPITestStepDefinition {
 		}
 	}
 	
-	
 	private String genRequestBody(Integer leftNumber, String calOperator, Integer rightNumber)
 	{
 		JSONObject requestJSON = new JSONObject();
@@ -179,6 +185,15 @@ public class kbCalcAPITestStepDefinition {
 		requestJSON.put("LeftNumber", leftNumber);
 		requestJSON.put("RightNumber", rightNumber);
 		requestJSON.put("Operator", calOperator);
+		return requestJSON.toJSONString();
+	}
+	
+	private String genInvalidRequestBody(String leftNumber, String calOperator, String rightNumber)
+	{
+		JSONObject requestJSON = new JSONObject();
+		requestJSON.put("LNum", leftNumber);
+		requestJSON.put("RNum", rightNumber);
+		requestJSON.put("Op", calOperator);
 		return requestJSON.toJSONString();
 	}
 	
