@@ -5,7 +5,7 @@
   <version>0.0.1-SNAPSHOT</version>
   <name>KiwiBankCalcAPI</name>
   <properties>
-    <testng.files.location>src/test/resources/</testng.files.location>
+    <testng.files.location>/</testng.files.location>
     <testng.file>testng.xml</testng.file>
 	<!--
     <maven-surefire.version>2.20</maven-surefire.version>
