@@ -4,6 +4,16 @@
   <artifactId>kbCalcAPI</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <name>KiwiBankCalcAPI</name>
+  <properties>
+    <testng.files.location>src/test/resources/</testng.files.location>
+    <testng.file>testng.xml</testng.file>
+	<!--
+    <maven-surefire.version>2.20</maven-surefire.version>
+    <org.aspectj-version>1.6.10</org.aspectj-version>
+    <aspectj.version>1.8.10</aspectj.version>
+    <testng.version>6.14.2</testng.version>
+	-->
+</properties>
   <dependencies>
   	<dependency>
   		<groupId>org.testng</groupId>
@@ -66,7 +76,7 @@
   				<source>1.8</source>
   				<target>1.8</target>
 	         	<suiteXmlFiles>
-	            	<suiteXmlFile>TestNG.xml</suiteXmlFile>
+	            	<suiteXmlFile>${testng.files.location}${testng.file}</suiteXmlFile>
 	          	</suiteXmlFiles>
         	</configuration>
   		</plugin>
