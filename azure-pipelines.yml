@@ -16,8 +16,8 @@ stages:
   - job: List file
     steps:
     - task: CmdLine@2
-      inptus:
-        script: dir  
+      inputs:
+        script: ls
 - stage: Run Maven test
   displayName: "Run Maven test"
   dependsOn:
