@@ -13,7 +13,7 @@ stages:
 - stage: ShowFiles
   displayName: "Show files in root directory"
   jobs:
-  - job: List file
+  - job: Listfile
     steps:
     - task: CmdLine@2
       inputs:
@@ -23,7 +23,7 @@ stages:
   dependsOn:
   - ShowFiles
   jobs:
-  - job: Exec. Maven
+  - job: ExecMaven
     steps:
     - task: Maven@3
       inputs:
