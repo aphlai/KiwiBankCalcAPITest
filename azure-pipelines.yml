@@ -18,7 +18,7 @@ stages:
     - task: CmdLine@2
       inputs:
         script: ls
-- stage: Run Maven test
+- stage: RunMaventest
   displayName: "Run Maven test"
   dependsOn:
   - ShowFiles
